@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>关系·今天 — 工作台 UX/UI V2</title>
+<style>
+  html, body { min-height: 100%; margin: 0; }
+  body {
+    padding: 18px;
+    background: light-dark(#ecebe5, #111713);
+  }
+  @media (max-width: 680px) { body { padding: 0; } }
+</style>
+</head>
+<body>
+<div id="relationship-workbench-fast-ui">
+  <style>
+    #relationship-workbench-fast-ui {
+      color-scheme: light dark;
+      --rw-canvas: light-dark(#ecebe5, #111713);
+      --rw-shell: light-dark(#f7f6f1, #18201b);
+      --rw-sidebar: light-dark(#e5eadf, #202a23);
+      --rw-surface: light-dark(#ffffff, #242e27);
+      --rw-surface-soft: light-dark(#f2f3ed, #2b352e);
+      --rw-line: light-dark(#d9ddd4, #3a463d);
+      --rw-ink: light-dark(#253128, #eef4ef);
+      --rw-subtle: light-dark(#69736c, #aab6ad);
+      --rw-faint: light-dark(#8b948e, #829087);
+      --rw-green: light-dark(#275b43, #83c49d);
+      --rw-green-soft: light-dark(#dfece3, #253c2d);
+      --rw-amber: light-dark(#98621f, #e6bd78);
+      --rw-amber-soft: light-dark(#f5ead7, #463822);
+      --rw-red: light-dark(#a34d4d, #e89b9b);
+      --rw-blue: light-dark(#315e8b, #8cb8e7);
+      color: var(--rw-ink);
+      background: transparent;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    }
+    #relationship-workbench-fast-ui * { box-sizing: border-box; }
+    #relationship-workbench-fast-ui [hidden] { display: none !important; }
+    #relationship-workbench-fast-ui button,
+    #relationship-workbench-fast-ui input,
+    #relationship-workbench-fast-ui textarea { font: inherit; color: inherit; }
+    #relationship-workbench-fast-ui button { cursor: pointer; }
+    #relationship-workbench-fast-ui .rw-window {
+      position: relative;
+      display: grid;
+      grid-template-columns: 156px minmax(0, 1fr);
+      min-height: 700px;
+      overflow: hidden;
+      border: 1px solid var(--rw-line);
+      border-radius: 18px;
+      background: var(--rw-shell);
+      box-shadow: 0 18px 48px light-dark(rgba(35, 50, 40, .12), rgba(0, 0, 0, .28));
+    }
+    #relationship-workbench-fast-ui .rw-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px 12px;
+      background: var(--rw-sidebar);
+      border-right: 1px solid var(--rw-line);
+    }
+    #relationship-workbench-fast-ui .rw-brand { padding: 0 8px; }
+    #relationship-workbench-fast-ui .rw-brand-row { display: flex; align-items: center; gap: 9px; font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-brand-mark {
+      display: grid; place-items: center; width: 30px; height: 30px;
+      border-radius: 10px; color: var(--rw-surface); background: var(--rw-green);
+    }
+    #relationship-workbench-fast-ui .rw-brand small { display: block; margin-top: 6px; color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-nav { display: grid; gap: 6px; }
+    #relationship-workbench-fast-ui .rw-nav-button {
+      display: flex; align-items: center; gap: 9px; width: 100%;
+      padding: 9px 10px; border: 0; border-radius: 10px;
+      background: transparent; color: var(--rw-subtle); text-align: left;
+    }
+    #relationship-workbench-fast-ui .rw-nav-button[aria-current="page"] {
+      color: var(--rw-green); background: var(--rw-surface);
+      box-shadow: 0 3px 12px light-dark(rgba(39, 91, 67, .08), rgba(0, 0, 0, .14));
+    }
+    #relationship-workbench-fast-ui .rw-nav-button span:last-child { flex: 1; }
+    #relationship-workbench-fast-ui .rw-local-note {
+      margin-top: auto; padding: 10px; border-radius: 11px;
+      color: var(--rw-subtle); background: var(--rw-green-soft);
+    }
+    #relationship-workbench-fast-ui .rw-main { min-width: 0; }
+    #relationship-workbench-fast-ui .rw-topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      min-height: 62px; padding: 12px 20px; border-bottom: 1px solid var(--rw-line);
+      background: var(--rw-shell);
+    }
+    #relationship-workbench-fast-ui .rw-title { margin: 0; font-size: 18px; font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-top-meta { display: flex; align-items: center; gap: 8px; color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rw-green); }
+    #relationship-workbench-fast-ui .rw-page { display: none; padding: 18px; }
+    #relationship-workbench-fast-ui .rw-page[data-visible="true"] { display: block; }
+    #relationship-workbench-fast-ui .rw-flow-tabs {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+      margin-bottom: 14px; padding: 4px; border-radius: 12px; background: var(--rw-surface-soft);
+    }
+    #relationship-workbench-fast-ui .rw-flow-tab {
+      min-width: 0; padding: 9px 7px; border: 0; border-radius: 9px;
+      color: var(--rw-subtle); background: transparent; white-space: nowrap;
+    }
+    #relationship-workbench-fast-ui .rw-flow-tab[aria-pressed="true"] { color: var(--rw-green); background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-workbench {
+      display: grid; grid-template-columns: minmax(210px, .8fr) minmax(300px, 1.2fr);
+      border: 1px solid var(--rw-line); border-radius: 15px; overflow: hidden; background: var(--rw-surface);
+    }
+    #relationship-workbench-fast-ui .rw-queue { min-width: 0; border-right: 1px solid var(--rw-line); }
+    #relationship-workbench-fast-ui .rw-queue-head,
+    #relationship-workbench-fast-ui .rw-detail-head { padding: 14px 16px; border-bottom: 1px solid var(--rw-line); }
+    #relationship-workbench-fast-ui .rw-queue-head strong,
+    #relationship-workbench-fast-ui .rw-detail-head strong { font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-queue-head span { display: block; margin-top: 3px; color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-queue-list { display: grid; }
+    #relationship-workbench-fast-ui .rw-person-row {
+      display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center;
+      width: 100%; padding: 13px 14px; border: 0; border-bottom: 1px solid var(--rw-line);
+      background: transparent; text-align: left;
+    }
+    #relationship-workbench-fast-ui .rw-person-row[aria-selected="true"] { background: var(--rw-green-soft); }
+    #relationship-workbench-fast-ui .rw-avatar {
+      display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px;
+      color: var(--rw-green); background: var(--rw-surface-soft); font-weight: 500;
+    }
+    #relationship-workbench-fast-ui .rw-person-copy { min-width: 0; }
+    #relationship-workbench-fast-ui .rw-person-copy strong { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #relationship-workbench-fast-ui .rw-person-copy span { display: block; margin-top: 3px; color: var(--rw-subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #relationship-workbench-fast-ui .rw-row-arrow { color: var(--rw-faint); }
+    #relationship-workbench-fast-ui .rw-detail { min-width: 0; }
+    #relationship-workbench-fast-ui .rw-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    #relationship-workbench-fast-ui .rw-source-line { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+    #relationship-workbench-fast-ui .rw-source-chip,
+    #relationship-workbench-fast-ui .rw-tag-chip {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px;
+      border-radius: 999px; color: var(--rw-subtle); background: var(--rw-surface-soft);
+    }
+    #relationship-workbench-fast-ui .rw-status-chip { padding: 4px 7px; border-radius: 999px; color: var(--rw-amber); background: var(--rw-amber-soft); white-space: nowrap; }
+    #relationship-workbench-fast-ui .rw-stepper {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 14px 18px 4px;
+    }
+    #relationship-workbench-fast-ui .rw-step { position: relative; color: var(--rw-faint); text-align: center; }
+    #relationship-workbench-fast-ui .rw-step::before {
+      content: ""; position: absolute; left: 50%; right: -50%; top: 10px; height: 1px; background: var(--rw-line);
+    }
+    #relationship-workbench-fast-ui .rw-step:last-child::before { display: none; }
+    #relationship-workbench-fast-ui .rw-step-dot {
+      position: relative; z-index: 1; display: grid; place-items: center; width: 21px; height: 21px;
+      margin: 0 auto 5px; border-radius: 50%; background: var(--rw-surface-soft); border: 1px solid var(--rw-line);
+    }
+    #relationship-workbench-fast-ui .rw-step[data-state="active"] { color: var(--rw-green); }
+    #relationship-workbench-fast-ui .rw-step[data-state="active"] .rw-step-dot,
+    #relationship-workbench-fast-ui .rw-step[data-state="done"] .rw-step-dot { color: var(--rw-surface); background: var(--rw-green); border-color: var(--rw-green); }
+    #relationship-workbench-fast-ui .rw-detail-body { padding: 16px 18px 18px; }
+    #relationship-workbench-fast-ui .rw-step-panel { display: none; }
+    #relationship-workbench-fast-ui .rw-step-panel[data-visible="true"] { display: block; }
+    #relationship-workbench-fast-ui .rw-section-title { margin: 0 0 7px; font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-section-copy { margin: 0; color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-evidence {
+      display: grid; gap: 8px; margin: 14px 0; padding: 12px; border-radius: 12px; background: var(--rw-surface-soft);
+    }
+    #relationship-workbench-fast-ui .rw-evidence-row { display: flex; justify-content: space-between; gap: 14px; }
+    #relationship-workbench-fast-ui .rw-evidence-row span:first-child { color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    #relationship-workbench-fast-ui .rw-button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      min-height: 36px; padding: 8px 12px; border: 1px solid var(--rw-line); border-radius: 10px;
+      background: var(--rw-surface); color: var(--rw-ink);
+    }
+    #relationship-workbench-fast-ui .rw-button-primary { color: var(--rw-surface); background: var(--rw-green); border-color: var(--rw-green); }
+    #relationship-workbench-fast-ui .rw-button-ghost { background: transparent; }
+    #relationship-workbench-fast-ui .rw-suggestion-box { margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--rw-green-soft); }
+    #relationship-workbench-fast-ui .rw-suggestion-head { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    #relationship-workbench-fast-ui .rw-tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    #relationship-workbench-fast-ui .rw-tag-chip[data-selected="true"] { color: var(--rw-green); background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-draft { width: 100%; min-height: 92px; margin-top: 12px; padding: 10px 12px; resize: vertical; border: 1px solid var(--rw-line); border-radius: 10px; background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-library-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    #relationship-workbench-fast-ui .rw-search { min-width: 230px; padding: 9px 11px; border: 1px solid var(--rw-line); border-radius: 10px; background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-table-wrap { overflow-x: auto; border: 1px solid var(--rw-line); border-radius: 14px; background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-table { width: 100%; border-collapse: collapse; }
+    #relationship-workbench-fast-ui .rw-table th,
+    #relationship-workbench-fast-ui .rw-table td { padding: 11px 12px; border-bottom: 1px solid var(--rw-line); text-align: left; vertical-align: middle; }
+    #relationship-workbench-fast-ui .rw-table th { color: var(--rw-subtle); font-weight: 400; }
+    #relationship-workbench-fast-ui .rw-table tr:last-child td { border-bottom: 0; }
+    #relationship-workbench-fast-ui .rw-source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    #relationship-workbench-fast-ui .rw-source-panel { padding: 16px; border: 1px solid var(--rw-line); border-radius: 14px; background: var(--rw-surface); }
+    #relationship-workbench-fast-ui .rw-source-panel strong { font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-source-panel p { color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-modal-layer {
+      position: absolute; z-index: 10; inset: 0; display: none; place-items: center;
+      padding: 20px; background: light-dark(rgba(37, 49, 40, .34), rgba(0, 0, 0, .48));
+    }
+    #relationship-workbench-fast-ui .rw-modal-layer[data-open="true"] { display: grid; }
+    #relationship-workbench-fast-ui .rw-modal {
+      width: min(440px, 100%); border: 1px solid var(--rw-line); border-radius: 16px;
+      background: var(--rw-surface); box-shadow: 0 24px 70px light-dark(rgba(35, 50, 40, .22), rgba(0, 0, 0, .4));
+    }
+    #relationship-workbench-fast-ui .rw-modal-head { display: flex; justify-content: space-between; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--rw-line); }
+    #relationship-workbench-fast-ui .rw-modal-head strong { font-weight: 500; }
+    #relationship-workbench-fast-ui .rw-close { border: 0; background: transparent; color: var(--rw-subtle); }
+    #relationship-workbench-fast-ui .rw-modal-body { padding: 16px 18px; }
+    #relationship-workbench-fast-ui .rw-check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    #relationship-workbench-fast-ui .rw-check { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 9px; background: var(--rw-surface-soft); }
+    #relationship-workbench-fast-ui .rw-modal-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 18px 18px; }
+    #relationship-workbench-fast-ui .rw-inline-result { margin-top: 10px; color: var(--rw-green); }
+    @media (max-width: 680px) {
+      #relationship-workbench-fast-ui .rw-window { grid-template-columns: 1fr; }
+      #relationship-workbench-fast-ui .rw-sidebar { gap: 10px; border-right: 0; border-bottom: 1px solid var(--rw-line); }
+      #relationship-workbench-fast-ui .rw-brand small, #relationship-workbench-fast-ui .rw-local-note { display: none; }
+      #relationship-workbench-fast-ui .rw-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      #relationship-workbench-fast-ui .rw-nav-button { justify-content: center; }
+      #relationship-workbench-fast-ui .rw-workbench { grid-template-columns: 1fr; }
+      #relationship-workbench-fast-ui .rw-queue { border-right: 0; border-bottom: 1px solid var(--rw-line); }
+      #relationship-workbench-fast-ui .rw-flow-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #relationship-workbench-fast-ui .rw-source-grid { grid-template-columns: 1fr; }
+      #relationship-workbench-fast-ui .rw-library-tools { align-items: stretch; flex-direction: column; }
+      #relationship-workbench-fast-ui .rw-search { min-width: 0; width: 100%; }
+    }
+  </style>
+
+  <section class="rw-window" aria-label="关系今天工作台快速交互方案">
+    <aside class="rw-sidebar">
+      <div class="rw-brand">
+        <div class="rw-brand-row"><span class="rw-brand-mark">今</span><span>关系·今天</span></div>
+        <small>只替你照看，不替你表演</small>
+      </div>
+      <nav class="rw-nav" aria-label="主导航">
+        <button class="rw-nav-button" type="button" data-rw-page-button="today" aria-current="page"><span aria-hidden="true">◉</span><span>维护工作台</span></button>
+        <button class="rw-nav-button" type="button" data-rw-page-button="people"><span aria-hidden="true">人</span><span>全部关系</span></button>
+        <button class="rw-nav-button" type="button" data-rw-page-button="sources"><span aria-hidden="true">源</span><span>数据来源</span></button>
+      </nav>
+      <div class="rw-local-note">本机加密库可用<br><span>无自动发送</span></div>
+    </aside>
+
+    <div class="rw-main">
+      <header class="rw-topbar">
+        <h1 class="rw-title" data-rw-page-title>今日维护</h1>
+        <div class="rw-top-meta"><span class="rw-live-dot"></span><span>已完成本机整库分析</span></div>
+      </header>
+
+      <section class="rw-page" data-rw-page="today" data-visible="true">
+        <div class="rw-flow-tabs" aria-label="待办阶段">
+          <button class="rw-flow-tab" type="button" data-rw-stage="identity" aria-pressed="true">待确认身份 2</button>
+          <button class="rw-flow-tab" type="button" data-rw-stage="tags" aria-pressed="false">待确认标签 4</button>
+          <button class="rw-flow-tab" type="button" data-rw-stage="contact" aria-pressed="false">今日联系 3</button>
+          <button class="rw-flow-tab" type="button" data-rw-stage="feedback" aria-pressed="false">待记反馈 1</button>
+        </div>
+
+        <div class="rw-workbench">
+          <section class="rw-queue" aria-label="当前待办列表">
+            <div class="rw-queue-head"><strong data-rw-queue-title>先确认是谁</strong><span>处理完原地进入下一步，不跳页面</span></div>
+            <div class="rw-queue-list">
+              <button class="rw-person-row" type="button" data-rw-person="li" data-rw-person-stage="identity" aria-selected="true">
+                <span class="rw-avatar">李</span><span class="rw-person-copy"><strong>李老师</strong><span>微信 · 个人号　+　碎银 · 2号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+              <button class="rw-person-row" type="button" data-rw-person="zhou" data-rw-person-stage="identity" aria-selected="false">
+                <span class="rw-avatar">周</span><span class="rw-person-copy"><strong>周总</strong><span>微信 · 个人号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+              <button class="rw-person-row" type="button" data-rw-person="chen" data-rw-person-stage="tags" aria-selected="false" hidden>
+                <span class="rw-avatar">陈</span><span class="rw-person-copy"><strong>陈医生</strong><span>碎银 · 1号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+              <button class="rw-person-row" type="button" data-rw-person="wang" data-rw-person-stage="tags" aria-selected="false" hidden>
+                <span class="rw-avatar">王</span><span class="rw-person-copy"><strong>王总</strong><span>微信 · 个人号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+              <button class="rw-person-row" type="button" data-rw-person="sun" data-rw-person-stage="contact" aria-selected="false" hidden>
+                <span class="rw-avatar">孙</span><span class="rw-person-copy"><strong>孙老师</strong><span>微信 · 个人号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+              <button class="rw-person-row" type="button" data-rw-person="zhao" data-rw-person-stage="feedback" aria-selected="false" hidden>
+                <span class="rw-avatar">赵</span><span class="rw-person-copy"><strong>赵总</strong><span>碎银 · 3号</span></span><span class="rw-row-arrow">›</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="rw-detail" aria-label="当前人物处理面板">
+            <div class="rw-detail-head">
+              <div><strong data-rw-person-name>李老师</strong><div class="rw-source-line" data-rw-source-line><span class="rw-source-chip">微信 · 个人号</span><span class="rw-source-chip">碎银 · 2号</span></div></div>
+              <span class="rw-status-chip" data-rw-status>身份待确认</span>
+            </div>
+            <div class="rw-stepper" aria-label="维护流程">
+              <div class="rw-step" data-rw-step="identity" data-state="active"><span class="rw-step-dot">1</span><span>身份</span></div>
+              <div class="rw-step" data-rw-step="tags" data-state="upcoming"><span class="rw-step-dot">2</span><span>标签</span></div>
+              <div class="rw-step" data-rw-step="contact" data-state="upcoming"><span class="rw-step-dot">3</span><span>联系</span></div>
+              <div class="rw-step" data-rw-step="feedback" data-state="upcoming"><span class="rw-step-dot">4</span><span>反馈</span></div>
+            </div>
+            <div class="rw-detail-body">
+              <div class="rw-step-panel" data-rw-step-panel="identity" data-visible="true">
+                <p class="rw-section-title" data-rw-identity-title>确认两个来源是不是同一个人</p>
+                <p class="rw-section-copy" data-rw-identity-copy>只有同时存在微信与碎银候选时，才显示合并判断。</p>
+                <div class="rw-evidence">
+                  <div class="rw-evidence-row" data-rw-source-evidence="primary"><span>微信身份</span><strong data-rw-primary-source>李老师 · 个人号</strong></div>
+                  <div class="rw-evidence-row" data-rw-source-evidence="secondary"><span>碎银身份</span><strong data-rw-secondary-source>李老师 · 2号碎银</strong></div>
+                  <div class="rw-evidence-row"><span>可核对依据</span><strong>昵称、最近一对一聊天</strong></div>
+                </div>
+                <div class="rw-actions"><button class="rw-button rw-button-primary" type="button" data-rw-confirm-identity>确认是同一人</button><button class="rw-button" type="button" data-rw-keep-separate>保持为两个人</button></div>
+              </div>
+
+              <div class="rw-step-panel" data-rw-step-panel="tags" data-visible="false">
+                <p class="rw-section-title">确认关系标签</p>
+                <p class="rw-section-copy">候选已基于此人的全部可靠一对一聊天完成分析；确认前不会写入。</p>
+                <div class="rw-suggestion-box">
+                  <div class="rw-suggestion-head"><span>建议标签</span><span>整库分析已完成</span></div>
+                  <div class="rw-tag-list"><span class="rw-tag-chip" data-selected="true">客户</span><span class="rw-tag-chip" data-selected="true">长期合作</span><span class="rw-tag-chip">朋友</span></div>
+                </div>
+                <div class="rw-actions"><button class="rw-button rw-button-primary" type="button" data-rw-confirm-tags>确认并准备联系</button><button class="rw-button" type="button" data-rw-open-tags>管理关系标签</button></div>
+              </div>
+
+              <div class="rw-step-panel" data-rw-step-panel="contact" data-visible="false">
+                <p class="rw-section-title">准备今天的联系</p>
+                <p class="rw-section-copy">联系角度来自近期聊天变化；只生成可编辑内容，不自动发送。</p>
+                <textarea class="rw-draft" aria-label="联系草稿">李老师，前几天聊到团队近期在调整接待流程，后来推进得怎么样了？有需要我一起梳理的地方，随时说。</textarea>
+                <div class="rw-actions"><button class="rw-button rw-button-primary" type="button" data-rw-copy>复制内容</button><button class="rw-button" type="button" data-rw-contact-done>我已在外部发送</button></div>
+                <div class="rw-inline-result" data-rw-copy-result></div>
+              </div>
+
+              <div class="rw-step-panel" data-rw-step-panel="feedback" data-visible="false">
+                <p class="rw-section-title">记录这次结果</p>
+                <p class="rw-section-copy">只记录你确认的结果，并据此更新下一次维护节奏。</p>
+                <div class="rw-actions"><button class="rw-button rw-button-primary" type="button">有回复</button><button class="rw-button" type="button">暂无回复</button><button class="rw-button" type="button">稍后跟进</button></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="rw-page" data-rw-page="people" data-visible="false">
+        <div class="rw-library-tools"><div><strong>全部关系</strong><div class="rw-section-copy">查看人物、来源与已确认关系</div></div><input class="rw-search" type="search" placeholder="搜索姓名、标签或来源" aria-label="搜索全部关系" data-rw-people-search></div>
+        <div class="rw-table-wrap">
+          <table class="rw-table">
+            <thead><tr><th>人物</th><th>来源</th><th>关系标签</th><th>最近互动</th><th></th></tr></thead>
+            <tbody>
+              <tr data-rw-person-row="li"><td><strong>李老师</strong></td><td><span class="rw-source-chip">微信</span> <span class="rw-source-chip">碎银 · 2号</span></td><td><span class="rw-tag-chip">客户</span> <span class="rw-tag-chip">长期合作</span></td><td>3 天前</td><td><button class="rw-button rw-button-ghost" type="button" data-rw-open-tags="li">管理标签</button></td></tr>
+              <tr data-rw-person-row="chen"><td><strong>陈医生</strong></td><td><span class="rw-source-chip">碎银 · 1号</span></td><td><span class="rw-tag-chip">客户</span></td><td>8 天前</td><td><button class="rw-button rw-button-ghost" type="button" data-rw-open-tags="chen">管理标签</button></td></tr>
+              <tr data-rw-person-row="zhou"><td><strong>周总</strong></td><td><span class="rw-source-chip">微信</span></td><td><span class="rw-tag-chip">待确认</span></td><td>17 天前</td><td><button class="rw-button rw-button-ghost" type="button" data-rw-open-tags="zhou">管理标签</button></td></tr>
+              <tr data-rw-empty-row hidden><td colspan="5">没有匹配的关系</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="rw-page" data-rw-page="sources" data-visible="false">
+        <div class="rw-source-grid">
+          <article class="rw-source-panel"><strong>微信导出</strong><p>个人号 · 最近更新：今天 08:42</p><div class="rw-source-line"><span class="rw-source-chip">1,846 人</span><span class="rw-source-chip">本机加密</span></div></article>
+          <article class="rw-source-panel"><strong>碎银</strong><p>3 个账号 · 最近更新：今天 08:51</p><div class="rw-source-line"><span class="rw-source-chip">1号</span><span class="rw-source-chip">2号</span><span class="rw-source-chip">3号</span></div></article>
+        </div>
+      </section>
+    </div>
+
+    <div class="rw-modal-layer" data-rw-modal-layer data-open="false">
+      <section class="rw-modal" role="dialog" aria-modal="true" aria-labelledby="rwTagDialogTitle">
+        <div class="rw-modal-head"><div><strong id="rwTagDialogTitle" data-rw-modal-title>管理关系标签 · 李老师</strong><div class="rw-section-copy">留在当前人物，不改变列表位置</div></div><button class="rw-close" type="button" aria-label="关闭" data-rw-close-modal><span aria-hidden="true">×</span></button></div>
+        <div class="rw-modal-body">
+          <div class="rw-check-grid">
+            <label class="rw-check"><input type="checkbox" checked> 客户</label>
+            <label class="rw-check"><input type="checkbox" checked> 长期合作</label>
+            <label class="rw-check"><input type="checkbox"> 朋友</label>
+            <label class="rw-check"><input type="checkbox"> 同行</label>
+            <label class="rw-check"><input type="checkbox"> 重点维护</label>
+            <label class="rw-check"><input type="checkbox"> 家人</label>
+          </div>
+        </div>
+        <div class="rw-modal-actions"><button class="rw-button" type="button" data-rw-close-modal>取消</button><button class="rw-button rw-button-primary" type="button" data-rw-save-tags>保存标签</button></div>
+      </section>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const root = document.getElementById("relationship-workbench-fast-ui");
+      const pageTitles = { today: "今日维护", people: "全部关系", sources: "数据来源" };
+      const stageTitles = { identity: "先确认是谁", tags: "确认关系标签", contact: "准备今天联系", feedback: "记录维护结果" };
+      const stepOrder = ["identity", "tags", "contact", "feedback"];
+      const people = {
+        li: { name: "李老师", sources: ["微信 · 个人号", "碎银 · 2号"], status: "身份待确认", step: "identity" },
+        zhou: { name: "周总", sources: ["微信 · 个人号"], status: "身份待确认", step: "identity" },
+        chen: { name: "陈医生", sources: ["碎银 · 1号"], status: "标签待确认", step: "tags" },
+        wang: { name: "王总", sources: ["微信 · 个人号"], status: "标签待确认", step: "tags" },
+        sun: { name: "孙老师", sources: ["微信 · 个人号"], status: "今日联系", step: "contact" },
+        zhao: { name: "赵总", sources: ["碎银 · 3号"], status: "待记反馈", step: "feedback" }
+      };
+      let currentPerson = "li";
+      let currentStage = "identity";
+      const emit = (name, detail) => root.dispatchEvent(new CustomEvent(`relationship-workbench:${name}`, { detail }));
+
+      const showPage = page => {
+        root.querySelectorAll("[data-rw-page]").forEach(panel => panel.dataset.visible = String(panel.dataset.rwPage === page));
+        root.querySelectorAll("[data-rw-page-button]").forEach(button => {
+          if (button.dataset.rwPageButton === page) button.setAttribute("aria-current", "page");
+          else button.removeAttribute("aria-current");
+        });
+        root.querySelector("[data-rw-page-title]").textContent = pageTitles[page];
+        emit("page-change", { page });
+      };
+
+      const showStep = step => {
+        const activeIndex = stepOrder.indexOf(step);
+        root.querySelectorAll("[data-rw-step]").forEach((item, index) => item.dataset.state = index < activeIndex ? "done" : index === activeIndex ? "active" : "upcoming");
+        root.querySelectorAll("[data-rw-step-panel]").forEach(panel => panel.dataset.visible = String(panel.dataset.rwStepPanel === step));
+        const person = people[currentPerson];
+        person.step = step;
+        root.querySelector("[data-rw-status]").textContent = { identity: "身份待确认", tags: "身份已确认 · 标签待确认", contact: "准备联系", feedback: "等待记录反馈" }[step];
+        emit("step-change", { personId: currentPerson, step });
+      };
+
+      const selectPerson = id => {
+        currentPerson = id;
+        const person = people[id];
+        root.querySelectorAll("[data-rw-person]").forEach(row => row.setAttribute("aria-selected", String(row.dataset.rwPerson === id)));
+        root.querySelector("[data-rw-person-name]").textContent = person.name;
+        const sourceLine = root.querySelector("[data-rw-source-line]");
+        sourceLine.replaceChildren(...person.sources.map(source => {
+          const chip = document.createElement("span");
+          chip.className = "rw-source-chip";
+          chip.textContent = source;
+          return chip;
+        }));
+        const dualSource = person.sources.length > 1;
+        root.querySelector("[data-rw-identity-title]").textContent = dualSource ? "确认两个来源是不是同一个人" : "确认这个来源身份";
+        root.querySelector("[data-rw-identity-copy]").textContent = dualSource ? "只有同时存在微信与碎银候选时，才显示合并判断。" : "当前只有一个来源，不提供容易误解的“保持分开”。";
+        root.querySelector("[data-rw-primary-source]").textContent = `${person.name} · ${person.sources[0]}`;
+        root.querySelector("[data-rw-source-evidence=\"primary\"] span").textContent = dualSource ? "微信身份" : "来源身份";
+        root.querySelector("[data-rw-source-evidence=\"secondary\"]").hidden = !dualSource;
+        root.querySelector("[data-rw-secondary-source]").textContent = dualSource ? `${person.name} · ${person.sources[1]}` : "";
+        root.querySelector("[data-rw-confirm-identity]").textContent = dualSource ? "确认是同一人" : "确认这个身份";
+        root.querySelector("[data-rw-keep-separate]").hidden = !dualSource;
+        showStep(person.step);
+        emit("person-select", { personId: id, person: { ...person } });
+      };
+
+      const showStage = stage => {
+        currentStage = stage;
+        root.querySelectorAll("[data-rw-stage]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.rwStage === stage)));
+        root.querySelectorAll("[data-rw-person-stage]").forEach(row => row.hidden = row.dataset.rwPersonStage !== stage);
+        root.querySelector("[data-rw-queue-title]").textContent = stageTitles[stage];
+        const first = root.querySelector(`[data-rw-person-stage="${stage}"]`);
+        if (first) selectPerson(first.dataset.rwPerson);
+      };
+
+      root.querySelectorAll("[data-rw-page-button]").forEach(button => button.addEventListener("click", () => showPage(button.dataset.rwPageButton)));
+      root.querySelectorAll("[data-rw-stage]").forEach(button => button.addEventListener("click", () => showStage(button.dataset.rwStage)));
+      root.querySelectorAll("[data-rw-person]").forEach(row => row.addEventListener("click", () => selectPerson(row.dataset.rwPerson)));
+      root.querySelector("[data-rw-confirm-identity]").addEventListener("click", () => { emit("identity-confirm", { personId: currentPerson }); showStep("tags"); });
+      root.querySelector("[data-rw-confirm-tags]").addEventListener("click", () => { emit("tags-confirm", { personId: currentPerson }); showStep("contact"); });
+      root.querySelector("[data-rw-contact-done]").addEventListener("click", () => { emit("manual-contact-record", { personId: currentPerson }); showStep("feedback"); });
+      root.querySelector("[data-rw-copy]").addEventListener("click", () => { root.querySelector("[data-rw-copy-result]").textContent = "已复制；请到外部手动发送"; emit("draft-copy", { personId: currentPerson }); });
+
+      const modalLayer = root.querySelector("[data-rw-modal-layer]");
+      root.querySelectorAll("[data-rw-open-tags]").forEach(button => button.addEventListener("click", () => {
+        if (button.dataset.rwOpenTags) currentPerson = button.dataset.rwOpenTags;
+        root.querySelector("[data-rw-modal-title]").textContent = `管理关系标签 · ${people[currentPerson].name}`;
+        modalLayer.dataset.open = "true";
+      }));
+      root.querySelectorAll("[data-rw-close-modal]").forEach(button => button.addEventListener("click", () => modalLayer.dataset.open = "false"));
+      root.querySelector("[data-rw-save-tags]").addEventListener("click", () => { modalLayer.dataset.open = "false"; emit("tags-save", { personId: currentPerson }); });
+      modalLayer.addEventListener("click", event => { if (event.target === modalLayer) modalLayer.dataset.open = "false"; });
+
+      const peopleSearch = root.querySelector("[data-rw-people-search]");
+      peopleSearch.addEventListener("input", () => {
+        const query = peopleSearch.value.trim().toLocaleLowerCase("zh-CN");
+        let visibleCount = 0;
+        root.querySelectorAll("[data-rw-person-row]").forEach(row => {
+          const matches = !query || row.textContent.toLocaleLowerCase("zh-CN").includes(query);
+          row.hidden = !matches;
+          if (matches) visibleCount += 1;
+        });
+        root.querySelector("[data-rw-empty-row]").hidden = visibleCount !== 0;
+      });
+
+      window.RelationshipWorkbenchUX = {
+        version: "0.1.0",
+        showPage,
+        showStage,
+        selectPerson,
+        showStep,
+        getState: () => ({ page: root.querySelector("[data-rw-page][data-visible=\"true\"]")?.dataset.rwPage, stage: currentStage, personId: currentPerson, step: people[currentPerson]?.step }),
+        on(name, handler) {
+          const listener = event => handler(event.detail);
+          root.addEventListener(`relationship-workbench:${name}`, listener);
+          return () => root.removeEventListener(`relationship-workbench:${name}`, listener);
+        }
+      };
+    })();
+  </script>
+</div>
+</body>
+</html>
