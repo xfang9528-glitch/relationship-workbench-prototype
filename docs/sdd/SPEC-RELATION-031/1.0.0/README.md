@@ -14,8 +14,8 @@
 交付边界：
 
 - 碎银上游目标：`PetWebOrg/suiyin_mcp`，与 T030 的三人设完整 cohort 合并建单。
+- 碎银 MCP Issue：[PetWebOrg/suiyin_mcp#19](https://github.com/PetWebOrg/suiyin_mcp/issues/19)。
 - 原型目标：`xfang9528-glitch/relationship-workbench-prototype`，本包不宣称 T031 已实现。
 - 生产实现必须走正式 Issue、独立 worktree、测试、PR 与房总 review；本次完整推送不写生产代码。
 - 远端入口：`docs/sdd/SPEC-RELATION-031/1.0.0`。
 - 交付标签：`v2026082001-unified-source-moments-sdd`。
-

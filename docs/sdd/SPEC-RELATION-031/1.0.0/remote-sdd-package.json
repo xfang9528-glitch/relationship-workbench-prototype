@@ -4,11 +4,11 @@
   "spec_version": "1.0.0",
   "constitution": "prototype-sdd@1.4.0",
   "artifact_class": "hosted-stateful",
-  "engineering_handoff": false,
-  "issue_url": null,
-  "canonical_url": "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/main/docs/sdd/SPEC-RELATION-031/1.0.0",
+  "engineering_handoff": true,
+  "issue_url": "https://github.com/PetWebOrg/suiyin_mcp/issues/19",
+  "canonical_url": "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/v2026082001-unified-source-moments-sdd/docs/sdd/SPEC-RELATION-031/1.0.0",
   "mirror_urls": [
-    "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/main/docs/sdd/SPEC-RELATION-031/1.0.0"
+    "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/v2026082001-unified-source-moments-sdd/docs/sdd/SPEC-RELATION-031/1.0.0"
   ],
   "files": [
     "spec.md",
@@ -25,4 +25,3 @@
   "approved_by": "房总",
   "approved_at": "2026-08-20"
 }
-
