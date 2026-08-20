@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "spec_id": "SPEC-RELATION-031",
+  "spec_version": "1.1.0",
+  "constitution": "prototype-sdd@1.4.0",
+  "artifact_class": "hosted-stateful",
+  "engineering_handoff": false,
+  "canonical_url": "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/v2026082002-existing-mcp-read-correction/docs/sdd/SPEC-RELATION-031/1.1.0",
+  "mirror_urls": [
+    "https://github.com/xfang9528-glitch/relationship-workbench-prototype/tree/v2026082002-existing-mcp-read-correction/docs/sdd/SPEC-RELATION-031/1.1.0"
+  ],
+  "files": [
+    "spec.md",
+    "plan.md",
+    "tasks.md",
+    "source-contract.md",
+    "operational-profile.md",
+    "source-convergence.md",
+    "issue-handoff.md",
+    "test-contract.md",
+    "README.md"
+  ],
+  "delivery_tag": "v2026082002-existing-mcp-read-correction",
+  "approved_by": "房总",
+  "approved_at": "2026-08-20"
+}
