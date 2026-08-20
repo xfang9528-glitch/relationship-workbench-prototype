@@ -1,0 +1,2 @@
+# Local-only hosted-stateful source snapshots must never become Pages entries.
+/hosted/* / 302

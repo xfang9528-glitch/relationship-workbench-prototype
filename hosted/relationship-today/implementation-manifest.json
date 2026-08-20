@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0.0",
+  "delivery_date": "2026-08-20",
+  "delivery_tag": "v2026082003-unified-source-moments-implementation",
+  "runtime_type": "hosted-stateful",
+  "runtime_boundary": "local-loopback-only",
+  "node_version": "v24.14.0",
+  "pages_route_guard": {
+    "file": "../../_redirects",
+    "bytes": 95,
+    "sha256": "DB2677510AD4D7827CCD49A8936D1526F3B6BD0522F63DB8EDA0B012BC1EA7A7",
+    "rule": "/hosted/* / 302"
+  },
+  "protected_baseline": {
+    "root_index_blob_before": "8b9eca32c66f70764be0bc1e696c201d6ac78207",
+    "root_index_blob_after": "8b9eca32c66f70764be0bc1e696c201d6ac78207",
+    "docs_sdd_tree_before": "21eaeb41c7f2f850d0cbaa6c68758b22905fffad",
+    "docs_sdd_tree_after": "21eaeb41c7f2f850d0cbaa6c68758b22905fffad"
+  },
+  "specs": [
+    "SPEC-RELATION-028@1.1.0",
+    "SPEC-RELATION-030@1.1.0",
+    "SPEC-RELATION-031@1.1.0"
+  ],
+  "privacy": {
+    "contains_private_data": false,
+    "contains_browser_storage": false,
+    "contains_credentials": false,
+    "fixtures_code_authored_fictional": true,
+    "inline_demo_copy_hand_authored_synthetic": true,
+    "live_mcp_read_during_tests": false
+  },
+  "sanitization": {
+    "public_payload_byte_identical_to_private_implementation": false,
+    "behavior_contract_preserved": true,
+    "substitutions": [
+      "private persona labels to explicit fictional labels",
+      "private aggregate values to non-matching synthetic counts",
+      "private MCP environment identifier to runtime configuration and fictional test environment",
+      "inline demo identities to numbered fictional contacts"
+    ]
+  },
+  "evidence_files": [
+    {
+      "path": "../../README.md",
+      "bytes": 1379,
+      "sha256": "F0AC55A8B6962B87FB300FE85F01ED4C39DCB12894A4BE2CB49455D1A088861B"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4104,
+      "sha256": "BDAB13E0C6EABD7B61B38D0DD5B17590ECAC61388105F200BFA7D48F477064B1"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 4602,
+      "sha256": "8D2C83F406607D881044F2D55B9DBFFD521CBE048DE73026FBE233B36AE9701B"
+    }
+  ],
+  "files": [
+    {
+      "path": "prototype/index.html",
+      "bytes": 399730,
+      "sha256": "82A10718A508E697403F823B7891DA9DE377A36ABA47A76FF6E46B7B4084DEAE"
+    },
+    {
+      "path": "prototype/local-vault.js",
+      "bytes": 295686,
+      "sha256": "E8419D2237C16CF752CE540C2460B0EE9CC0EFBABF3C13B1C63703BC3FD77B6E"
+    },
+    {
+      "path": "scripts/lint-prototype.mjs",
+      "bytes": 9001,
+      "sha256": "E325A5139E41AAF8DAF27122DDB3F8606527173F00B587BD9133ED7E1CBCCBD0"
+    },
+    {
+      "path": "scripts/start-local-preview.mjs",
+      "bytes": 9659,
+      "sha256": "2223D3A2CDC1124B8BEB4E175C519A56BCD2609EC2B35797F08B50D63B48B37F"
+    },
+    {
+      "path": "scripts/suiyin-mcp-client.mjs",
+      "bytes": 65749,
+      "sha256": "C1072DD5060F3D0CFCFCF9EEC81745C87DBD225887996D533BDC2C954161066E"
+    },
+    {
+      "path": "scripts/test-local-vault.mjs",
+      "bytes": 376704,
+      "sha256": "572DF30420344997CC93A4B18B17530AB1F159461062A078AC0420181E94C26F"
+    },
+    {
+      "path": "scripts/test-pilot.mjs",
+      "bytes": 224916,
+      "sha256": "DBF8E71DAEB181BC53C8E8E9419AB3869A8EF712BD4BB432F60DD2275241BE33"
+    },
+    {
+      "path": "scripts/test-suiyin-mcp.mjs",
+      "bytes": 117289,
+      "sha256": "C330B1DA694EF57C073C9CBFF7609796A3D414A74BCAE966F3205599AAA13097"
+    },
+    {
+      "path": "specs/002-local-import-identity-persistence/fixtures/wechat-export-toolkit-fictional/fixture-manifest.json",
+      "bytes": 664,
+      "sha256": "419FE9B7FCDCC03E1AACC694104FFB79131DC50F8088354727765D65F5DC5896"
+    },
+    {
+      "path": "specs/002-local-import-identity-persistence/fixtures/wechat-export-toolkit-fictional/json/_index.json",
+      "bytes": 389,
+      "sha256": "D063F5521CFBC663DB432043323ED861D71BC97CBD5DAB623F3B75BA6FACA3E7"
+    },
+    {
+      "path": "specs/002-local-import-identity-persistence/fixtures/wechat-export-toolkit-fictional/json/虚构会话_a1b2c3.json",
+      "bytes": 1493,
+      "sha256": "5F868E379517EA13CE349B9C5CF04ADA7F4FA0DBB16F8A81C5E6BBAC64E5DDD1"
+    },
+    {
+      "path": "specs/002-local-import-identity-persistence/fixtures/wechat-export-toolkit-fictional/json/all_messages.jsonl",
+      "bytes": 1177,
+      "sha256": "BBA8CA262BC1BC543231F7D4C5C6B6BA7DECA1D1974713D6DCD885C9EA725EF4"
+    },
+    {
+      "path": "specs/002-local-import-identity-persistence/fixtures/wechat-export-toolkit-fictional/moments/data.js",
+      "bytes": 869,
+      "sha256": "B099A47A0B23C4BD694D9D3B81BA06646A0A28DBDC2AB98E89192F36F8633A39"
+    }
+  ]
+}

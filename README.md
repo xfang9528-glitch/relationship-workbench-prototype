@@ -25,3 +25,9 @@ npx --yes wrangler@4.110.0 pages deploy . --project-name relationship-workbench-
 ```
 
 仓库采用纯 HTML/CSS/JavaScript，无构建步骤和外部运行依赖。
+
+## 本机有状态实现快照
+
+`hosted/relationship-today/` 保存了 `SPEC-RELATION-028/030/031@1.1.0` 的可运行实现与纯虚构测试证据。它只允许通过 `127.0.0.1` 本机回环服务运行；Pages 用 `_redirects` 阻断整个 `/hosted/*` 路径，不形成在线入口。该快照不包含浏览器本机库、真实联系人、聊天或朋友圈数据。
+
+实现说明与验证命令见 [`hosted/relationship-today/README.md`](hosted/relationship-today/README.md)。

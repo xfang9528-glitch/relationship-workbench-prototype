@@ -1,0 +1,21 @@
+{
+  "fixture_id": "wechat-export-toolkit-fictional-v1",
+  "fictional_only": true,
+  "source_contract_id": "SOURCE-CONTRACT-WECHAT-EXPORT-TOOLKIT@1.0.0",
+  "source_bundle_revision": "F94A61B13F749F2D486C2C510762FE07016153F6A289DEFB90B8D1CB2F3BF511",
+  "provenance": "hand-authored synthetic structure; not sampled, transformed, or derived from any real export",
+  "allowed_relative_files": [
+    "json/_index.json",
+    "json/all_messages.jsonl",
+    "json/虚构会话_a1b2c3.json",
+    "moments/data.js"
+  ],
+  "forbidden_inputs": [
+    "real accounts",
+    "real contacts",
+    "real chats",
+    "real moments",
+    "real media",
+    "absolute user paths"
+  ]
+}

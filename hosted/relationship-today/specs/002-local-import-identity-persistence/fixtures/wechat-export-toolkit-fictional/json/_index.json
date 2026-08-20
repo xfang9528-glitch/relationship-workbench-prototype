@@ -1,0 +1,16 @@
+{
+  "owner": "fictional_owner_alpha",
+  "conversation_count": 1,
+  "total_messages": 3,
+  "conversations": [
+    {
+      "talker": "fictional_talker_elm",
+      "talker_name": "虚构联系人·榆",
+      "is_group": false,
+      "message_count": 3,
+      "first_time": "2026-01-02 09:00:00",
+      "last_time": "2026-01-02 09:02:00",
+      "file": "虚构会话_a1b2c3.json"
+    }
+  ]
+}
